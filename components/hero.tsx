@@ -17,7 +17,7 @@ export function Hero() {
 
   return (
     <>
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-muted/30 to-background">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-muted/30 to-background mt-20">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img

@@ -4,7 +4,8 @@ import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { FeaturedDestinations } from "@/components/featured-destinations"
 import { WhyChooseUs } from "@/components/why-choose-us"
-import Footer from "@/components/footer"     // ПРАВИЛЬНО
+import { Services } from "@/components/services"
+import Footer from "@/components/footer"     
 import { useEffect } from "react"
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <FeaturedDestinations />
       <WhyChooseUs />
+      <Services />
       <Footer />
     </main>
   )

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: "Відібрані інженерні рішення, що забезпечують надійну роботу та ефективність",
   generator: "v0.app",
   icons: {
-    icon: "/images/logo.jpg",
+    icon: "/icon.svg",
   },
 }
 

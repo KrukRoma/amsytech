@@ -1,177 +1,124 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+
+function useHasMounted() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted
+}
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false)
+  const hasMounted = useHasMounted()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    if (!hasMounted) return
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [hasMounted])
+
+  const navClass = hasMounted
+    ? isScrolled
+      ? "bg-white/80 backdrop-blur-xl border-b border-border"
+      : "bg-transparent"
+    : "bg-white/80 backdrop-blur-xl border-b border-border"
 
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault()
-
-    const isProductPage = window.location.pathname.startsWith("/products/")
-
-    if (isProductPage) {
-      window.location.href = `/${targetId}`
+    if (targetId === "#home") {
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } else {
-      if (targetId === "#packages" || targetId === "#home") {
-        window.scrollTo({ top: 0, behavior: "smooth" })
-      } else {
-        const element = document.querySelector(targetId)
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" })
-        }
-      }
+      const el = document.querySelector(targetId)
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
     }
-
     setIsMobileMenuOpen(false)
   }
 
   const handleLogoClick = () => {
-    if (window.location.pathname === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" })
-    } else {
-      window.location.href = "/"
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-border" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navClass}`}>
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20">
+
+            {/* Логотип — лівий край */}
             <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer" onClick={handleLogoClick}>
-              <Image src="/5425129490188724738 копія.jpg" alt="Amsytech Logo" width={40} height={40} className="object-contain" />
-              <h1 className="text-2xl font-semibold tracking-tight">Amsytech</h1>
+              <Image src="/AmsytechLogoImage.svg" alt="Amsytech Logo" width={40} height={40} className="object-contain" />
+              <h1 className="text-4xl whitespace-nowrap font-style italic">
+                <span style={{ fontStyle: "italic" }}>AMSYTECH</span>
+              </h1>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-12">
-              <a
-                href="#packages"
-                onClick={(e) => smoothScroll(e, "#packages")}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
-              >
+            {/* Пункти меню — рівномірно між логотипом і кнопкою */}
+            <div className="hidden md:flex flex-1 items-center justify-evenly">
+              <a href="#home" onClick={(e) => smoothScroll(e, "#home")} className="text-base font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap">
                 Головна
               </a>
-              <a
-                href="#destinations"
-                onClick={(e) => smoothScroll(e, "#destinations")}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
-              >
+              <a href="#destinations" onClick={(e) => smoothScroll(e, "#destinations")} className="text-base font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap">
                 Продукти
               </a>
-
-              <a
-                href="#about"
-                onClick={(e) => smoothScroll(e, "#about")}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
-              >
+              <a href="#about" onClick={(e) => smoothScroll(e, "#about")} className="text-base font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap">
                 Про Нас
               </a>
-              <a
-                href="#contact"
-                onClick={(e) => smoothScroll(e, "#contact")}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
-              >
-                Контакти
+              <a href="#contact" onClick={(e) => smoothScroll(e, "#contact")} className="text-base font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap">
+                Послуги
               </a>
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:block">
+            {/* Кнопка — правий край */}
+            <div className="hidden md:block flex-shrink-0">
               <Button
-                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 text-base whitespace-nowrap cursor-pointer"
                 onClick={() => setIsContactDialogOpen(true)}
               >
                 Звʼязатися
               </Button>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Мобільне меню */}
             <button
               className="md:hidden relative w-6 h-6 flex items-center justify-center"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
               <span className="sr-only">Toggle menu</span>
-              <div className="relative w-6 h-6 flex flex-col justify-center gap-1.5">
-                <span
-                  className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 absolute top-1/2 left-0 ${
-                    isMobileMenuOpen ? "rotate-45 translate-y-0" : "-translate-y-2"
-                  }`}
-                />
-                <span
-                  className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 ${
-                    isMobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
-                  }`}
-                />
-                <span
-                  className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 absolute top-1/2 left-0 ${
-                    isMobileMenuOpen ? "-rotate-45 translate-y-0" : "translate-y-2"
-                  }`}
-                />
+              <div className="relative w-6 h-5 flex flex-col justify-between">
+                <span className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-[9px]" : ""}`} />
+                <span className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`block h-0.5 w-full bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-[9px]" : ""}`} />
               </div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden bg-white border-t border-border transition-all duration-500 ease-in-out overflow-hidden ${
-            isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
+        {/* Мобільне випадаюче меню */}
+        <div className={`md:hidden bg-white border-t border-border transition-all duration-500 ease-in-out overflow-hidden ${isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="px-6 py-6 space-y-4">
-            <a
-              href="#packages"
-              onClick={(e) => smoothScroll(e, "#packages")}
-              className="block text-base font-medium text-foreground/70 hover:text-foreground"
-            >
+            <a href="#home" onClick={(e) => smoothScroll(e, "#home")} className="block text-base font-medium text-foreground/70 hover:text-foreground">
               Головна
             </a>
-            <a
-              href="#destinations"
-              onClick={(e) => smoothScroll(e, "#destinations")}
-              className="block text-base font-medium text-foreground/70 hover:text-foreground"
-            >
+            <a href="#destinations" onClick={(e) => smoothScroll(e, "#destinations")} className="block text-base font-medium text-foreground/70 hover:text-foreground">
               Продукти
             </a>
-
-            <a
-              href="#about"
-              onClick={(e) => smoothScroll(e, "#about")}
-              className="block text-base font-medium text-foreground/70 hover:text-foreground"
-            >
+            <a href="#about" onClick={(e) => smoothScroll(e, "#about")} className="block text-base font-medium text-foreground/70 hover:text-foreground">
               Про Нас
             </a>
-            <a
-              href="#contact"
-              onClick={(e) => smoothScroll(e, "#contact")}
-              className="block text-base font-medium text-foreground/70 hover:text-foreground"
-            >
-              Контакти
+            <a href="#contact" onClick={(e) => smoothScroll(e, "#contact")} className="block text-base font-medium text-foreground/70 hover:text-foreground">
+              Послуги
             </a>
             <Button
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full cursor-pointer"
               onClick={() => {
                 setIsContactDialogOpen(true)
                 setIsMobileMenuOpen(false)

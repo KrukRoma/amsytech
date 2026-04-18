@@ -18,7 +18,6 @@ export function Hero() {
   return (
     <>
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-muted/30 to-background mt-20">
-        {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
             src="/IMAGE 2026-03-23 17:26:21.jpg"
@@ -27,7 +26,6 @@ export function Hero() {
           />
         </div>
 
-        {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center py-32">
           <div className="space-y-8">
             <h1 className="text-6xl md:text-7xl lg:text-8xl text-balance">
@@ -43,7 +41,7 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Button
                 size="lg"
-                className="rounded-full px-8 h-14 text-base group cursor-pointer"
+                className="rounded-full px-8 h-14 text-base w-64 group cursor-pointer"
                 onClick={scrollToProducts}
               >
                 Наші Продукти
@@ -52,7 +50,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="rounded-full px-8 h-14 text-base border-2 bg-transparent cursor-pointer"
+                className="rounded-full px-8 h-14 text-base w-64 border-2 bg-transparent cursor-pointer"
                 onClick={() => setIsContactDialogOpen(true)}
               >
                 Звʼязатися з нами
@@ -60,7 +58,6 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-8 md:gap-16 max-w-3xl mx-auto mt-24 pt-16 border-t border-border/50">
             <div className="space-y-2">
               <div className="text-4xl md:text-5xl">10+</div>

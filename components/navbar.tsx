@@ -5,12 +5,6 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 
-function useHasMounted() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  return mounted
-}
-
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false)
@@ -32,7 +26,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20">
 
@@ -44,7 +38,7 @@ export default function Navbar() {
               </h1>
             </div>
 
-            {/* Пункти меню — рівномірно між логотипом і кнопкою */}
+            {/* Пункти меню */}
             <div className="hidden md:flex flex-1 items-center justify-evenly">
               <a href="#home" onClick={(e) => smoothScroll(e, "#home")} className="text-base font-medium text-foreground/70 hover:text-foreground transition-colors whitespace-nowrap">
                 Головна
@@ -87,7 +81,7 @@ export default function Navbar() {
         </div>
 
         {/* Мобільне випадаюче меню */}
-        <div className={`md:hidden bg-white border-t border-border transition-all duration-500 ease-in-out overflow-hidden ${isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+        <div className={`md:hidden bg-background border-t border-border transition-all duration-500 ease-in-out overflow-hidden ${isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="px-6 py-6 space-y-4">
             <a href="#home" onClick={(e) => smoothScroll(e, "#home")} className="block text-base font-medium text-foreground/70 hover:text-foreground">
               Головна

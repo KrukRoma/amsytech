@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Prompt } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { Providers } from "@/components/providers"
 
 const prompt = Prompt({
   weight: ["300", "400", "500", "600", "700"],
@@ -19,15 +20,29 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="uk">
-      <body className={`font-sans ${prompt.variable} antialiased`} suppressHydrationWarning>
-        {children}
+    <html lang="uk" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className={`font-sans ${prompt.variable} antialiased`}>
+        <Providers>
+          {children}
+        </Providers>
         <Analytics />
       </body>
     </html>

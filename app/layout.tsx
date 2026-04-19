@@ -33,6 +33,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     document.documentElement.classList.add('dark');
                   }
+                  document.documentElement.classList.add('no-transition');
+                  window.addEventListener('load', function() {
+                    setTimeout(function() {
+                      document.documentElement.classList.remove('no-transition');
+                    }, 50);
+                  });
                 } catch(e) {}
               })();
             `,

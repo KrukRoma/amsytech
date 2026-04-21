@@ -1,15 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Prompt } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Providers } from "@/components/providers"
-
-const prompt = Prompt({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-prompt",
-})
 
 export const metadata: Metadata = {
   title: "Amsytech - Інженерні рішення для опалення",
@@ -35,9 +28,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   }
                   document.documentElement.classList.add('no-transition');
                   window.addEventListener('load', function() {
+                    // Збільшено до 200ms щоб next-themes встиг завершити гідратацію
+                    // перш ніж transitions увімкнуться і браузер відновить scroll position
                     setTimeout(function() {
                       document.documentElement.classList.remove('no-transition');
-                    }, 50);
+                    }, 200);
                   });
                 } catch(e) {}
               })();
@@ -45,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
       </head>
-      <body className={`font-sans ${prompt.variable} antialiased`}>
+      <body className="antialiased">
         <Providers>
           {children}
         </Providers>

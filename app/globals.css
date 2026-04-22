@@ -89,6 +89,25 @@
   transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
 }
 
+/* Бургер-лінії — власні анімації, не перекривати глобальним transition */
+.burger-line {
+  transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.25s ease, background-color 0.4s ease !important;
+}
+
+/* Мобільне меню — анімація появи */
+.mobile-menu {
+  transition: max-height 0.45s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease !important;
+}
+
+.mobile-menu.closing {
+  transition: max-height 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.2s ease !important;
+}
+
+/* Пункти мобільного меню — staggered появлення */
+.mobile-menu-item {
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.4s ease !important;
+}
+
 img {
   transition: opacity 0.4s ease, filter 0.4s ease !important;
 }
